@@ -1,0 +1,13 @@
+{
+  "name": "browser-ssh-client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SSH client that runs entirely in the browser, using Direct Sockets in an Isolated Web App",
+  "scripts": {
+    "dev": "node dev/serve.mjs",
+    "test": "node --test test/*.test.mjs",
+    "app": "electron39 ."
+  },
+  "main": "electron/main.js"
+}

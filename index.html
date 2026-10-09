@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Browser SSH</title>
+    <link rel="manifest" href="/.well-known/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <header class="bar">
+      <form id="connect-form" class="connect" autocomplete="on">
+        <label class="field host">
+          <span>Host</span>
+          <input id="host" name="host" required placeholder="example.com" autocomplete="on" spellcheck="false" />
+        </label>
+        <label class="field port">
+          <span>Port</span>
+          <input id="port" name="port" type="number" min="1" max="65535" value="22" required />
+        </label>
+        <label class="field user">
+          <span>User</span>
+          <input id="user" name="user" required autocomplete="username" spellcheck="false" />
+        </label>
+        <label class="field password">
+          <span>Password</span>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="optional" />
+        </label>
+        <label class="field key">
+          <span>Ed25519 key</span>
+          <input id="key" name="key" type="file" />
+        </label>
+        <button id="connect" type="submit" class="primary">Connect</button>
+      </form>
+
+      <div id="session" class="session" hidden>
+        <span class="dot" aria-hidden="true"></span>
+        <span id="session-label"></span>
+        <span id="session-fp" class="muted"></span>
+        <button id="disconnect" type="button">Disconnect</button>
+      </div>
+
+      <!-- Shown only when the OS draws no window controls (borderless IWA, frameless Electron). -->
+      <div class="window-controls">
+        <button id="minimize-window" class="window-button" type="button" aria-label="Minimize window" title="Minimize">
+          <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6h8" /></svg>
+        </button>
+        <button id="close-window" class="window-button window-close" type="button" aria-label="Close window" title="Close">
+          <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="terminal" class="terminal-host"></main>
+
+    <dialog id="dialog">
+      <form method="dialog" id="dialog-form">
+        <h2 id="dialog-title"></h2>
+        <div id="dialog-body"></div>
+        <div id="dialog-buttons" class="buttons"></div>
+      </form>
+    </dialog>
+  </body>
+</html>

@@ -1,0 +1,323 @@
+:root {
+  --bg: #16181d;
+  --panel: #1e2128;
+  --border: #2c313b;
+  --text: #d8dee9;
+  --muted: #8a93a3;
+  --accent: #6aa7ff;
+  --accent-text: #0b1220;
+  --danger: #ff6b6b;
+  --ok: #7bd88f;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.4 system-ui, sans-serif;
+}
+
+.bar {
+  position: relative;
+  flex: none;
+  padding: 8px 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  /* Without a title bar, the header is what you drag to move the window. */
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.bar input,
+.bar button,
+.bar label {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+/* Window Controls Overlay: the OS buttons sit on top of the header, so keep clear of them. */
+@media (display-mode: window-controls-overlay) {
+  .bar {
+    padding-left: max(12px, env(titlebar-area-x, 0px));
+    padding-right: calc(100vw - env(titlebar-area-x, 0px) - env(titlebar-area-width, 100vw) + 12px);
+    min-height: env(titlebar-area-height, auto);
+  }
+}
+
+/* Borderless IWA or frameless Electron window: no OS controls, so we draw our own. */
+.window-controls {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  display: none;
+  gap: 2px;
+}
+
+.window-button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+}
+
+.window-button svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.window-button:hover {
+  background: var(--border);
+}
+
+.window-close:hover {
+  background: #c42b1c;
+  border-color: #c42b1c;
+  color: #fff;
+}
+
+.frameless .bar {
+  padding-right: 86px;
+}
+
+.frameless .window-controls {
+  display: flex;
+}
+
+/* A borderless IWA has no API to minimize itself, so it only gets the close button. */
+@media (display-mode: borderless) {
+  .bar {
+    padding-right: 52px;
+  }
+
+  .window-controls {
+    display: flex;
+  }
+
+  :root:not(.frameless) #minimize-window {
+    display: none;
+  }
+}
+
+.connect {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.field span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.field.host input {
+  width: 200px;
+}
+
+.field.port input {
+  width: 70px;
+}
+
+.field.user input,
+.field.password input {
+  width: 130px;
+}
+
+input {
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+input[type='file'] {
+  padding: 3px 4px;
+  max-width: 220px;
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+button {
+  height: 28px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+button.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.session {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+}
+
+.connect[hidden],
+.session[hidden] {
+  display: none;
+}
+
+.session #disconnect {
+  margin-left: auto;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+}
+
+.muted {
+  color: var(--muted);
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+}
+
+/* Terminal */
+
+.terminal-host {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  padding: 6px 0 0 8px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.term canvas {
+  display: block;
+  cursor: text;
+}
+
+.term-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  resize: none;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.term-bell {
+  animation: bell 0.15s ease-out;
+}
+
+@keyframes bell {
+  from {
+    box-shadow: inset 0 0 0 2px var(--accent);
+  }
+  to {
+    box-shadow: inset 0 0 0 0 transparent;
+  }
+}
+
+/* Dialog */
+
+dialog {
+  width: min(520px, calc(100vw - 32px));
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+dialog h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+dialog h2.warning {
+  color: var(--danger);
+}
+
+dialog p {
+  margin: 0 0 10px;
+}
+
+dialog code {
+  display: block;
+  padding: 6px 8px;
+  margin: 4px 0 10px;
+  border-radius: 4px;
+  background: var(--bg);
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+dialog .field {
+  margin-bottom: 10px;
+}
+
+dialog .field input {
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-top: 16px;
+}
