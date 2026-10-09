@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "description": "SSH client that runs entirely in the browser, using Direct Sockets in an Isolated Web App",
+  "license": "MIT",
   "scripts": {
     "dev": "node dev/serve.mjs",
     "test": "node --test test/*.test.mjs",

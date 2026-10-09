@@ -4,6 +4,14 @@ An SSH client that runs entirely in the browser. There is no backend, relay or W
 the page opens a raw TCP connection to `sshd` with the **Direct Sockets API** and speaks the SSH
 protocol itself.
 
+> [!WARNING]
+> **Not security-audited.** The SSH protocol code is a new, independent implementation that has
+> not had a security review. It is tested against OpenSSH, and all cryptographic primitives come
+> from the browser's WebCrypto rather than custom code, but bugs in protocol handling can still
+> undermine the security SSH is supposed to provide. Use it for learning and experiments, not to
+> protect sensitive servers or credentials. Please report security issues privately rather than
+> in public issues.
+
 Everything here is written from scratch with zero runtime dependencies:
 
 - **SSH protocol** (`src/ssh/`)
@@ -133,3 +141,7 @@ For distribution without developer mode, build a Signed Web Bundle:
 
 Install the resulting `.swbn` through enterprise policy or `chrome://web-app-internals`. The app
 ID is derived from the signing key, so keep that key safe.
+
+## License
+
+[MIT](LICENSE) © 2026 Rodolfo Villaruz
